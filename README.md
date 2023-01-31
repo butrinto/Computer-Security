@@ -98,3 +98,80 @@ If the values for p and q are too small, Charlie can use brute force techniques 
 7) Charlie decrypts the message
 
 ## <a name="Java2">Computer Security — What does it do?</a>
+
+
+Below is the output of our program when you run it (RSAAlogrithm.java)
+
+<p align="center">
+  <img width="600" height="400" src=./images/RSA1.png>
+</p>
+
+The below snippet shows our implementation of the RSA encryption algorithm. The function takes a message m and encrypts itwith the RSA encryption algorithm - m<sub>e</sub>mod n. It returns the cipher text generated from the encryption.
+
+```
+/* This function encrypts the message, in other words, it turns plain text into cipher text
+Input: It takes 3 parameters, e and n values and m
+Output: It returns the cypher text
+*/
+
+static BigInteger encryption{long e, long n, String m)
+{
+  BigInteger message = new BigInteger(m);
+
+  BigInteger result = (message.pow((int)e).mod(BigInteger.valueOf(n))); //Runs the actual encryption
+
+  //Prints out the encryption key for demo purposes
+  System.out.println("Encryption (public) key is: " + e + " (e), " + n + " (n)");
+  //Prints out the cupher text
+  System.out.println("--> Cipher text generated with encryption key: " + result + "\n!);
+
+  return result; //Resturns the result - the cipher text
+}
+```
+
+
+The below screenshot shows our implementation of the RSA decryption algorithm. The function takes a cipher text c and decrypts it with the RSA decryption algorithm - c<sub>d</sub>modn.
+It returns the message/result generated from the decryption.
+
+```
+/*
+		This function decrypts the message, in other words, it turns cipher text back into plain text
+		It takes 3 parameters, d and n values (which make up the private key of said person) and c, the cipher text to be decrypted
+		Output: It returns the plain text message
+	*/
+	static String decryption(long d, long n, BigInteger cipherText) {
+		BigInteger oriMessage = (cipherText.pow((int)d).mod(BigInteger.valueOf(n))); //Run the actual decryption function which is message = c^d mod n
+		
+		// Prints out the decryption key for demo purposes
+		System.out.println("Decryption (private) key is: " + d + " (d), " + n + " (n)");
+		// Prints out the message decrypted
+		System.out.println("--> Result generated from using decryption key on cipher text: " + oriMessage + "\n");
+		System.out.println("Bob now knows the secret message");
+		System.out.println("\n-------------------------------------------------------------------------------------------------\n");
+		
+		return oriMessage.toString(); //Returns the result - the decrypted message
+	}
+  ```
+  
+
+The below code shows our function to generate an e value. It takes φ(n) as input and checks if the greatest common divisor of each number from 2 to φ(n) and φ(n) is equal to 1. If it is, then it is a suitable candidate for e value. For demo purposes we keep a counter of all suitable e values and store all suitable candidates in an arraylist and randomly pick out a suitable value from that list.
+
+```
+static long getRandomE(long phin) {
+		ArrayList<Integer> eValueList = new ArrayList<Integer>(); //Creates a new arraylist
+		for(int i = 2; i < phin; i++) { //Loops from 2 to the value of phi(n)
+			if(gcd(phin, i) == 1) { //Checks if the greatest common dividor is 1
+				eValueList.add(i); //If it is, adds it to the arraylist
+				eCounter++; //Increments counter by 1, again, only for demo purposes
+			}
+		}
+		Random rand = new Random(); //Creates new random object
+		Integer randomEValue = eValueList.get(rand.nextInt(eValueList.size())); //Goes through the arraylist of possible e's and randomly picks an e
+		return randomEValue; //Returns the random e value
+	}
+```
+
+For full code breakdown and review, please refer to our Report - detailed below:
+[Computer_Security_Report.pdf](https://github.com/butrinto/Computer-Security/files/10547792/Computer_Security_Report.pdf)
+
+
